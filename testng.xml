@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ParallelExecution" parallel="tests" thread-count="3">
+    <test name="Scenario1">
+        <classes>
+            <class name="Automation.SeleniumAutomation.LambdaTestSeleniumScenario1"/> 
+        </classes>
+    </test>
+     <test name="Scenario2">
+        <classes>
+            <class name="Automation.SeleniumAutomation.LambdaTestSeleniumScenario2"/> 
+        </classes>
+    </test>
+     <test name="Scenario3">
+        <classes>
+            <class name="Automation.SeleniumAutomation.LambdaTestSeleniumScenario3"/> 
+        </classes>
+    </test>
+</suite>
