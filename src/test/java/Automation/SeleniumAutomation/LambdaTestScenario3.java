@@ -7,16 +7,24 @@ import java.util.HashMap;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 
-public class LambdaTestSeleniumScenario3 {
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+public class LambdaTestScenario3 {
 
 	WebDriver driver = null;
 	String EnterMessage = "WelcometoLambdaTest";
@@ -55,26 +63,24 @@ public class LambdaTestSeleniumScenario3 {
 			WebElement zipCode = driver.findElement(By.id("inputZip"));
 
 			name.sendKeys("Subha");
-			email.sendKeys("subha@gmail.com");
+			email.sendKeys("subha_b@persistent.com");
 			pwd.sendKeys("1234");
 			Company.sendKeys("Persistent");
-			websitename.sendKeys("www.subhaalu.com");
+			websitename.sendKeys("www.subhaBalu.com");
 			WebElement Country = driver.findElement(By.xpath("//select[@name='country']"));
 			Select drpdwn = new Select(Country);
-			//drpdwn.selectByValue("United States");
+			// drpdwn.selectByValue("United States");
 			drpdwn.selectByVisibleText("United States");
-			city.sendKeys("Dublin");
-			address1.sendKeys("3245 Apricot Ln");
+			city.sendKeys("PlainCity");
+			address1.sendKeys("58874 Apricotway");
 			address2.sendKeys("Near Dublin");
 			state.sendKeys("OH");
-			zipCode.sendKeys("3245");
-			
+			zipCode.sendKeys("45897");
+
 			SubmitButton.click();
 			WebElement mssg = driver.findElement(By.cssSelector("p[class='success-msg hidden']"));
-			String validMssg =mssg.getText();
+			String validMssg = mssg.getText();
 			Assert.assertEquals(validMssg, MessgValidation);
-
-			
 
 		} else {
 			System.out.println("inputFormSubmit is not displayed");
@@ -84,29 +90,38 @@ public class LambdaTestSeleniumScenario3 {
 
 	@BeforeMethod
 	public void beforeMethod() {
-ChromeOptions browserOptions = new ChromeOptions();
-		
-		browserOptions.setCapability("browserVersion", "132.0");
 
-		HashMap<String, Object> ltOptions = new HashMap<>();
-		ltOptions.put("visual", true);
-		ltOptions.put("video", true);
-		ltOptions.put("build", "Assignment");
-		ltOptions.put("project", "SeleniumProj");
-		ltOptions.put("name", "LambdaTestSuite");
-		ltOptions.put("console", "error");
-		ltOptions.put("selenium_version", "4.11.0");
+		String username = "subhashini_b";
+		String accessKey = "Z2eM9fQt4qolS26WnmoZlMi2N77HvZAmL3WoJt5Pa3KV0YViUV";
+		String gridUrl = "https://" + username + ":" + accessKey + "@hub.lambdatest.com/wd/hub";
+
+		ChromeOptions browserOptions = new ChromeOptions();
+		// browserOptions.setPlatformName("Windows 11");
+		browserOptions.setBrowserVersion("132");
+		HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+		ltOptions.put("username", "subhashini_b");
+		ltOptions.put("accessKey", "Z2eM9fQt4qolS26WnmoZlMi2N77HvZAmL3WoJt5Pa3KV0YViUV");
+		ltOptions.put("project", "LambdaTest");
+		ltOptions.put("w3c", true);
+		ltOptions.put("plugin", "java-testNG");
 		browserOptions.setCapability("LT:Options", ltOptions);
 
-		System.setProperty("webdriver.chrome.driver", "C:\\chromeDriver\\chromedriver.exe");
-		driver = new ChromeDriver(browserOptions);
+		try {
+			URI uri = new URI(gridUrl);
+			URL url = uri.toURL();
+			driver = new RemoteWebDriver(url, browserOptions);
+		} catch (URISyntaxException | MalformedURLException e) {
+			// Handle the exception appropriately
+			System.err.println("Error constructing URL: " + e.getMessage());
+		}
+
 		driver.get("https://www.lambdatest.com/selenium-playground/");
 		driver.manage().window().maximize();
 	}
 
 	@AfterMethod
 	public void afterMethod() {
-		 driver.quit();
+		driver.quit();
 	}
 
 }
